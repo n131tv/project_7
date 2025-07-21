@@ -8,14 +8,18 @@ class TestCreateCourier:
 
     @allure.title('Создаем нового курьера, через рандом')
     def test_create_new_courier(self):
+        with allure.step("Формируем payload для нового курьера"):
         payload = {
             "login": "testuser",
             "password": "testpass",
             "firstName": "Тест"
         }
-        response = requests.post(url_create_courier, data=payload)
-        assert response.status_code == 201, f"Ожидался статус 201, но получен {response.status_code}"
-        assert response.json() == {'ok': True}
+        with allure.step("Отправляем POST-запрос на создание курьера"):
+            response = requests.post(url_create_courier, data=payload)
+
+        with allure.step("Проверяем успешный статус-код и тело ответа"):
+            assert response.status_code == 201, f"Ожидался статус 201, но получен {response.status_code}"
+            assert response.json() == {'ok': True}
 
     @allure.title('Проверка, что нельзя создать двух одинаковых курьеров')
     def test_cant_create_two_identical_couriers(self):
