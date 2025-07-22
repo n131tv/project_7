@@ -18,9 +18,10 @@ class TestLoginCourier:
         with allure.step("Авторизуемся под созданным курьером"):
             response = requests.post(url_courier_login, json=payload)
             # Проверка успешной авторизации = 200
+        with allure.step("Проверяем статус ответа и наличие ID"):
+            response_data = response.json()
             assert response.status_code == 200, f"Ожидался статус 200, но получен {response.status_code}"
             # Проверка наличия 'id' в ответе
-            response_data = response.json()
             assert  'id' in response_data, f"Ожидался в ответе 'id' курьера, но получен {response.json()}"
             # Проверка что 'id' целое число
             assert isinstance(response_data['id'], int)
@@ -37,6 +38,7 @@ class TestLoginCourier:
             }
         with allure.step("Авторизуемся с пустым именем пользователя"):
             response = requests.post(url_courier_login, json=payload)
+        with allure.step("Проверяем статус и сообщение об ошибке"):
             # Проверка появления ошибки = 400
             assert response.status_code == 400, f"Ожидался статус 400, но получен {response.status_code}"
             # Проверка соответствия текста ошибки требованиям
@@ -54,6 +56,7 @@ class TestLoginCourier:
             }
         with allure.step("Авторизуемся с пустым паролем"):
             response = requests.post(url_courier_login, json=payload)
+        with allure.step("Проверяем статус и сообщение об ошибке"):
             # Проверка появления ошибки = 400
             assert response.status_code == 400, f"Ожидался статус 400, но получен {response.status_code}"
             # Проверка соответствия текста ошибки требованиям
@@ -70,6 +73,7 @@ class TestLoginCourier:
             }
         with allure.step("Авторизуемся без передачи поля 'login'"):
             response = requests.post(url_courier_login, json=payload)
+        with allure.step("Проверяем статус и сообщение об ошибке"):
             # Проверка появления ошибки = 400
             assert response.status_code == 400, f"Ожидался статус 400, но получен {response.status_code}"
             # Проверка соответствия текста ошибки требованиям
@@ -87,7 +91,7 @@ class TestLoginCourier:
             }
         with allure.step("Авторизуемся с некорректным именем пользователя"):
             response = requests.post(url_courier_login, json=payload)
-            # Проверка появления ошибки = 404
+        with allure.step("Проверяем статус и сообщение об ошибке"):
             assert response.status_code == 404, f"Ожидался статус 404, но получен {response.status_code}"
             # Проверка соответствия текста ошибки требованиям
             assert response.json()['message'] == "Учетная запись не найдена", \
@@ -104,6 +108,7 @@ class TestLoginCourier:
             }
         with allure.step("Авторизуемся с некорректным паролем"):
             response = requests.post(url_courier_login, json=payload)
+        with allure.step("Проверяем статус и сообщение об ошибке"):
             # Проверка появления ошибки = 404
             assert response.status_code == 404, f"Ожидался статус 404, но получен {response.status_code}"
             # Проверка соответствия текста ошибки требованиям
@@ -119,6 +124,7 @@ class TestLoginCourier:
             }
         with allure.step("Авторизуемся с некорректным именем пользователя и паролем"):
             response = requests.post(url_courier_login, json=payload)
+        with allure.step("Проверяем статус и сообщение об ошибке"):
             # Проверка появления ошибки = 404
             assert response.status_code == 404, f"Ожидался статус 404, но получен {response.status_code}"
             # Проверка соответствия текста ошибки требованиям
@@ -135,6 +141,7 @@ class TestLoginCourier:
             }
         with allure.step("Авторизуемся без передачи поля 'password'"):
             response = requests.post(url_courier_login, json=payload)
+        with allure.step("Проверяем статус и сообщение об ошибке"):
             # Проверка появления ошибки = 400
             assert response.status_code == 400, f"Ожидался статус 400, но получен {response.status_code}"
             # Проверка соответствия текста ошибки требованиям
